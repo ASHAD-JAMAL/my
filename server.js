@@ -24,7 +24,7 @@ const contactSchema = new mongoose.Schema({
 const Contact = mongoose.model("Contact", contactSchema);
 
 // API Endpoint
-app.post("/api/contact", async (req, res) => {
+app.post("/contact", async (req, res) => {
   try {
     const contact = new Contact(req.body);
     await contact.save();
@@ -34,6 +34,11 @@ app.post("/api/contact", async (req, res) => {
   }
 });
 
+app.get('/',(req,res)=>{
+    res.status(200).json({
+      message:"hello"
+    });
+})
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
