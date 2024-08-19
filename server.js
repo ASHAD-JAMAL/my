@@ -2,25 +2,19 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const {dbConnection}= require('./config/dbConfig');
 require('dotenv').config();  // Load environment variables from .env file
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB Connection using the environment variable
-mongoose.connect(process.env.MONGO_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
-  console.log("Database connected successfully");
-}).catch((error) => {
-  console.error("Database connection error:", error);
-});
-
+// mongoDb connection
+dbConnection(process.env.MONGO_URL);
 const contactSchema = new mongoose.Schema({
   name: String,
   email: String,
