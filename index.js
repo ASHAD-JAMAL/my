@@ -1,44 +1,25 @@
+require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const {dbConnection}= require('./config/dbConfig');
-require('dotenv').config();  // Load environment variables from .env file
+const { dbConnection } = require("./config/dbConfig");
+const contactRoutes = require("./routes/contactRoutes");
 
+const { MONGO_URL, PORT } = process.env;
 const app = express();
-const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
-// MongoDB Connection using the environment variable
-// mongoDb connection
-dbConnection(process.env.MONGO_URL);
-const contactSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  message: String,
-});
+// MongoDB Connection
+dbConnection(MONGO_URL);
 
-const Contact = mongoose.model("Contact", contactSchema);
+// Routes
+app.use("/", contactRoutes);
 
-// API Endpoint
-app.post("/contact", async (req, res) => {
-  try {
-    const contact = new Contact(req.body);
-    await contact.save();
-    res.status(201).send(contact);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
+const port = PORT || 5000;
 
-app.get('/',(req,res)=>{
-    res.status(200).json({
-      message:"hello"
-    });
-})
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
