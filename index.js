@@ -9,12 +9,7 @@ const { MONGO_URL, PORT } = process.env;
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: 'https://my-portfolio-rho-ochre-90.vercel.app', // frontend URL
-  methods: ['GET', 'POST'], // Allowed methods
-  allowedHeaders: ['Content-Type'], // Allowed headers
-}));
-
+app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB Connection
